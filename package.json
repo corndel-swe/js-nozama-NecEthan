@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "db:reset": "sqlite3 db/db.sqlite < db/migrations/1-reset.sql",
+    "db:seed": "sqlite3 db/db.sqlite < db/migrations/2-seed.sql",
     "dev": "nodemon server/run.js",
     "start": "node server/run.js",
     "test": "mocha --require ./tests/hooks.js ./tests/*",
@@ -26,7 +27,7 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
-    "express": "^4.19.2",
+    "express": "^4.21.2",
     "knex": "^3.1.0",
     "sqlite3": "^5.1.7",
     "zod": "^3.22.4"

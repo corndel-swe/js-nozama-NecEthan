@@ -11,9 +11,13 @@ class User {
   }
 
   static async findById(id) {
-    /**
-     * TODO: finish this method
-     */
+    const query = `SELECT * FROM users WHERE id = ?`
+    const results = await db.raw(query, [id])
+
+    const user = results[0]
+    delete user.password
+
+    return user
   }
 }
 
