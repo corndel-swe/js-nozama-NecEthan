@@ -22,7 +22,7 @@ class User {
 
   static async addUser(user) {
 
-    const fields = ['username', 'firstName', 'lastName', 'email', 'avatar', 'password'];
+    const fields = ['username', 'firstName', 'lastName', 'email', 'password'];
 
     for (let field of fields) {
       if (!user[field]) {
@@ -35,16 +35,26 @@ class User {
     VALUES (?, ?, ?, ?, ?, ?)
     `;
 
-    const results = await db.raw(query, [
-      user.username,
-      user.firstName,
-      user.lastName,
-      user.email,
-      user.avatar,
-      user.password]);
-    
-    delete results.password
-    return results;
+    if (user.avatar) {
+      await db.raw(query, [
+        user.username,
+        user.firstName,
+        user.lastName,
+        user.email,
+        user.avatar,
+        user.password]);
+           
+    } else {
+      await db.raw(query, [
+        user.username,
+        user.firstName,
+        user.lastName,
+        user.email,
+        null,
+        user.password]);
+    }
+   
+ 
   }
 
   static async loginUser(username, password) {
@@ -66,17 +76,16 @@ class User {
 
   static async deleteUser(userId) {
     const checkQuery = `SELECT * FROM users WHERE id = ?`;
-    const checkResults = await db.raw(checkQuery, [userId]);
-  
-    if (checkResults.length === 0) {
-      return null;
-    }
 
+    const result = await db.raw(checkQuery, [userId])
+    if (result.length < 1) {
+      throw new Error('User not found')
+    }
+    
     const query = `DELETE FROM users WHERE id = ?`;
 
     await db.raw(query, [userId])
 
-    return true;
   }
 }
 
