@@ -13,15 +13,14 @@ let state = {
   count: 0
 }
 
-/**
- * Add a GET /counter endpoint
- * It should simply res.json(state)
- */
+app.get('/counter', (req, res) => {
+  res.status(200).json(state);
+})
 
-/**
- * Add a PUT /counter/increment endpoint
- * It should increase the counter by 1 and then res.json(state)
- */
+app.put('/counter/increment', (req, res) => {
+  state.count = state.count + 1;
+  res.status(200).json(state);
+})
 
 app.use('/counter', router)
 

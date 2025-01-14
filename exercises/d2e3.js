@@ -17,23 +17,22 @@ const alarms = [
 ]
 
 app.get('/alarms', (req, res) => {
-  /**
-   * Responds with all the alarms as a JSON response
-   */
+  res.json(alarms);
 })
 
 app.get('/alarms/:index', (req, res) => {
-  /**
-   * Responds with the alarm at the given index
-   */
+  const index = req.params.index;
+  res.json(alarms[index])
+
 })
+
 
 app.post('/alarms', (req, res) => {
-  /**
-   * Request contains a new alarm in the req.body
-   * Push it to the end of the alarms array
-   * Respond with a 201 status code
-   */
-})
+  const payload = req.body;
+  alarms.push(payload);  
 
+  res.status(201).json({
+    message: 'Alarm added',
+  });
+});
 export default app
